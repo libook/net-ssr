@@ -1,0 +1,18 @@
+[package]
+name = "net-ssr"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "interrogator"
+path = "src/interrogator/main.rs"
+
+[[bin]]
+name = "transponder"
+path = "src/transponder/main.rs"
+
+[dependencies]
+hostname = "^0.4"
+tokio = { version = "1", features = ["full"] }
+tokio-util = "0.6"
+pnet = "0.28.0"
