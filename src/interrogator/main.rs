@@ -5,23 +5,45 @@ use tokio::task;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    // Get all network interfaces
-    let interfaces = datalink::interfaces();
+    // Check if program recieved argument "--bc-addr" and a value after it
+    let mut broadcast_address = None;
+    let mut args = std::env::args();
+    while let Some(arg) = args.next() {
+        if arg == "--bc-addr" {
+            if let Some(value) = args.next() {
+                broadcast_address = Some(value.parse::<Ipv4Addr>().ok());
+            } else {
+                panic!("Expected broadcast address after --bc-addr");
+            }
+        }
+    }
 
     // Start listening on port 1090
     let listener = task::spawn(async {
         listen_on_port(1090).await;
     });
 
-    // Broadcast to all addresses
     let mut broadcast_tasks = vec![];
-    for interface in interfaces {
-        if let Some(broadcast_ip) = get_broadcast_address(&interface) {
-            let task = task::spawn(async move {
-                broadcast_to(&broadcast_ip, 1030).await;
-            });
-            broadcast_tasks.push(task);
+
+    if broadcast_address.is_none() {
+        // Get all network interfaces
+        let interfaces = datalink::interfaces();
+
+        // Broadcast to all addresses
+        for interface in interfaces {
+            if let Some(broadcast_ip) = get_broadcast_address(&interface) {
+                let task = task::spawn(async move {
+                    broadcast_to(&broadcast_ip, 1030).await;
+                });
+                broadcast_tasks.push(task);
+            }
         }
+    } else {
+        let broadcast_ip = broadcast_address.unwrap().unwrap();
+        let task = task::spawn(async move {
+            broadcast_to(&broadcast_ip, 1030).await;
+        });
+        broadcast_tasks.push(task);
     }
 
     for task in broadcast_tasks {
