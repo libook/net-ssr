@@ -5,11 +5,11 @@ edition = "2021"
 
 [[bin]]
 name = "interrogator"
-path = "src/interrogator/main.rs"
+path = "src/interrogator.rs"
 
 [[bin]]
 name = "transponder"
-path = "src/transponder/main.rs"
+path = "src/transponder.rs"
 
 [dependencies]
 hostname = "^0.4"
