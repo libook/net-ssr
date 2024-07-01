@@ -1,5 +1,4 @@
 use net_ssr::listen_on_port;
-use std::sync::Arc;
 use tokio::task;
 
 #[tokio::main]
@@ -7,7 +6,6 @@ async fn main() -> std::io::Result<()> {
     // Start listening on port 1030 with custom code
     let listener = task::spawn(async {
         listen_on_port(1030, |received_string, addr, socket| {
-            let socket = Arc::clone(&socket);
             Box::pin(async move {
                 if received_string == "CQ" {
                     println!("Received from {}", addr);
