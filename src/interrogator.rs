@@ -21,14 +21,12 @@ async fn main() -> std::io::Result<()> {
 
     // Start listening on port 1090
     let listener = task::spawn(async {
-        listen_on_port(1090, |received, addr, _| {
+        listen_on_port(1090, |received_string, addr, _| {
             Box::pin(async move {
-                let received_str = String::from_utf8_lossy(received.as_slice());
-
                 // Check if the received data is message start with 'R '.
-                if received_str.starts_with("R ") {
+                if received_string.starts_with("R ") {
                     // Print message after "R " and IP
-                    let message = received_str.split_at(2).1;
+                    let message = received_string.split_at(2).1;
                     println!("Received hostname: {} from {}", message, addr);
                 }
             })
