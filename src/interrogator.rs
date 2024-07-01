@@ -1,3 +1,4 @@
+use net_ssr::listen_on_port;
 use pnet::datalink::{self, NetworkInterface};
 use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 use tokio::net::UdpSocket;
@@ -20,7 +21,19 @@ async fn main() -> std::io::Result<()> {
 
     // Start listening on port 1090
     let listener = task::spawn(async {
-        listen_on_port(1090).await;
+        listen_on_port(1090, |received, addr, _| {
+            Box::pin(async move {
+                let received_str = String::from_utf8_lossy(received.as_slice());
+
+                // Check if the received data is message start with 'R '.
+                if received_str.starts_with("R ") {
+                    // Print message after "R " and IP
+                    let message = received_str.split_at(2).1;
+                    println!("Received hostname: {} from {}", message, addr);
+                }
+            })
+        })
+        .await;
     });
 
     let mut broadcast_tasks = vec![];
@@ -80,25 +93,5 @@ async fn broadcast_to(broadcast_ip: &Ipv4Addr, port: u16) {
             "Failed to send broadcast to {}:{}. Error: {}",
             broadcast_ip, port, e
         ),
-    }
-}
-
-async fn listen_on_port(port: u16) {
-    let addr = format!("0.0.0.0:{}", port);
-    let socket = UdpSocket::bind(&addr).await.unwrap();
-    println!("Listening on port {}", port);
-
-    let mut buf = vec![0; 1024];
-    loop {
-        let (len, addr) = socket.recv_from(&mut buf).await.unwrap();
-        let received_buf = &buf[..len];
-        let received_str = std::str::from_utf8(received_buf).unwrap();
-
-        // Check if the received data is message start with 'R '.
-        if received_str.starts_with("R ") {
-            // Print message after "R " and IP
-            let message = received_str.split_at(2).1;
-            println!("Received hostname: {} from {}", message, addr);
-        }
     }
 }
