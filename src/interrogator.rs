@@ -1,14 +1,23 @@
+use clap::Parser;
 use net_ssr::listen_on_port;
 use pnet::datalink::{self, NetworkInterface};
 use std::net::{Ipv4Addr, SocketAddrV4};
 use tokio::net::UdpSocket;
 use tokio::task;
-use std::env;
+
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    /// Address to broadcast to
+    #[arg(short, long)]
+    broadcast_address: Option<Ipv4Addr>,
+}
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
     // Parses command-line arguments to get the broadcast address
-    let broadcast_address = parse_args();
+    let args = Args::parse();
+    let broadcast_address = args.broadcast_address.clone();
 
     // Spawns a listening task on port 1090 to handle incoming data
     let listener = task::spawn(async {
@@ -19,7 +28,8 @@ async fn main() -> std::io::Result<()> {
                     println!("Received from {}: {}", addr, received_string);
                 }
             })
-        }).await;
+        })
+        .await;
     });
 
     // Vector to hold tasks for broadcasting
@@ -51,17 +61,6 @@ async fn main() -> std::io::Result<()> {
     Ok(())
 }
 
-/// Parses command-line arguments to extract the broadcast IP address, if provided.
-fn parse_args() -> Option<Ipv4Addr> {
-    let mut args = env::args();
-    while let Some(arg) = args.next() {
-        if arg == "--bc-addr" {
-            return args.next().and_then(|value| value.parse().ok());
-        }
-    }
-    None
-}
-
 /// Retrieves the broadcast IP address from a given network interface.
 fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
     interface.ips.iter().find_map(|ip| {
@@ -75,14 +74,21 @@ fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
 
 /// Asynchronously sends a broadcast message to a specified IP address and port.
 async fn broadcast_to(broadcast_ip: Ipv4Addr, port: u16) {
-    let socket = UdpSocket::bind("0.0.0.0:0").await.expect("Failed to bind socket");
-    socket.set_broadcast(true).expect("Failed to set broadcast mode");
+    let socket = UdpSocket::bind("0.0.0.0:0")
+        .await
+        .expect("Failed to bind socket");
+    socket
+        .set_broadcast(true)
+        .expect("Failed to set broadcast mode");
 
     let addr = SocketAddrV4::new(broadcast_ip, port);
     let message = b"CQ";
 
     if let Err(e) = socket.send_to(message, &addr).await {
-        eprintln!("Failed to send broadcast to {}:{}. Error: {}", broadcast_ip, port, e);
+        eprintln!(
+            "Failed to send broadcast to {}:{}. Error: {}",
+            broadcast_ip, port, e
+        );
     } else {
         println!("Sent broadcast to {}:{}", broadcast_ip, port);
     }
