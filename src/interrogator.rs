@@ -7,11 +7,14 @@ use std::env;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
+    // Parses command-line arguments to get the broadcast address
     let broadcast_address = parse_args();
 
+    // Spawns a listening task on port 1090 to handle incoming data
     let listener = task::spawn(async {
         listen_on_port(1090, |received_string, addr, _| {
             Box::pin(async move {
+                // Prints received messages starting with "R "
                 if received_string.starts_with("R ") {
                     println!("Received from {}: {}", addr, received_string);
                 }
@@ -19,14 +22,16 @@ async fn main() -> std::io::Result<()> {
         }).await;
     });
 
-    let mut broadcast_tasks = vec![];
+    // Vector to hold tasks for broadcasting
+    let mut broadcast_tasks = Vec::new();
 
+    // Depending on whether a broadcast IP is provided via args, spawns tasks accordingly
     if let Some(bc_addr) = broadcast_address {
-        // 使用命令行参数指定的广播地址
+        // Spawns a single broadcast task with the specified address from args
         let task = task::spawn(broadcast_to(bc_addr, 1030));
         broadcast_tasks.push(task);
     } else {
-        // 获取所有网络接口的广播地址
+        // Retrieves network interfaces and spawns a task for each with a valid broadcast IP
         let interfaces = datalink::interfaces();
         for interface in interfaces {
             if let Some(broadcast_ip) = get_broadcast_address(&interface) {
@@ -36,6 +41,7 @@ async fn main() -> std::io::Result<()> {
         }
     }
 
+    // Awaits completion of all broadcast tasks
     for task in broadcast_tasks {
         task.await.unwrap();
     }
@@ -45,6 +51,7 @@ async fn main() -> std::io::Result<()> {
     Ok(())
 }
 
+/// Parses command-line arguments to extract the broadcast IP address, if provided.
 fn parse_args() -> Option<Ipv4Addr> {
     let mut args = env::args();
     while let Some(arg) = args.next() {
@@ -55,6 +62,7 @@ fn parse_args() -> Option<Ipv4Addr> {
     None
 }
 
+/// Retrieves the broadcast IP address from a given network interface.
 fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
     interface.ips.iter().find_map(|ip| {
         if let pnet::ipnetwork::IpNetwork::V4(ipv4) = ip {
@@ -65,9 +73,10 @@ fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
     })
 }
 
+/// Asynchronously sends a broadcast message to a specified IP address and port.
 async fn broadcast_to(broadcast_ip: Ipv4Addr, port: u16) {
     let socket = UdpSocket::bind("0.0.0.0:0").await.expect("Failed to bind socket");
-    socket.set_broadcast(true).expect("Failed to set broadcast");
+    socket.set_broadcast(true).expect("Failed to set broadcast mode");
 
     let addr = SocketAddrV4::new(broadcast_ip, port);
     let message = b"CQ";
