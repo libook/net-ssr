@@ -24,8 +24,11 @@ async fn main() -> std::io::Result<()> {
         listen_on_port(1090, |received_string, addr, _| {
             Box::pin(async move {
                 // Prints received messages starting with "R "
-                if received_string.starts_with("R ") {
-                    println!("Received from {}: {}", addr, received_string);
+                let partten = "R ";
+                if received_string.starts_with(partten) {
+                    // Get hostname from 3rd characters to end
+                    let hostname = received_string[partten.len()..].to_string();
+                    println!("Received from {}: {}", addr, hostname);
                 }
             })
         })
