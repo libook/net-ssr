@@ -1,23 +1,49 @@
-use clap::Parser;
-use net_ssr::listen_on_port;
+use clap::{crate_description, crate_name, crate_version, Arg, ArgAction, Command};
+use net_ssr::{get_ip_range, listen_on_port};
 use pnet::datalink::{self, NetworkInterface};
 use std::net::{Ipv4Addr, SocketAddrV4};
+use std::str::FromStr;
 use tokio::net::UdpSocket;
 use tokio::task;
 
-#[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
-struct Args {
-    /// Address to broadcast to
-    #[arg(short, long)]
-    broadcast_address: Option<Ipv4Addr>,
-}
-
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    // Parses command-line arguments to get the broadcast address
-    let args = Args::parse();
-    let broadcast_address = args.broadcast_address.clone();
+    // Parses command-line arguments
+    let matches = Command::new(crate_name!())
+        .version(crate_version!())
+        .about(crate_description!())
+        .arg(
+            Arg::new("start")
+                .short('s')
+                .long("start")
+                .value_name("START")
+                .help("Optional. Broadcast starting IP address.")
+                .action(ArgAction::Set),
+        )
+        .arg(
+            Arg::new("to")
+                .short('t')
+                .long("to")
+                .value_name("TO")
+                .help("Optional. Broadcast IP addresses from --start to --to")
+                .action(ArgAction::Set),
+        )
+        .get_matches();
+
+    let start_ip = matches
+        .get_one::<String>("start")
+        .map(|s| Ipv4Addr::from_str(s).expect("Invalid --start IP address"));
+    let to_ip = matches
+        .get_one::<String>("to")
+        .map(|s| Ipv4Addr::from_str(s).expect("Invalid --to IP address"));
+
+    if let (Some(start), Some(to)) = (start_ip, to_ip) {
+        if to <= start {
+            panic!("Error: --to must be greater than --start");
+        }
+    } else if to_ip.is_some() && start_ip.is_none() {
+        panic!("Error: --to specified without --start");
+    }
 
     // Spawns a listening task on port 1090 to handle incoming data
     let listener = task::spawn(async {
@@ -39,10 +65,17 @@ async fn main() -> std::io::Result<()> {
     let mut broadcast_tasks = Vec::new();
 
     // Depending on whether a broadcast IP is provided via args, spawns tasks accordingly
-    if let Some(bc_addr) = broadcast_address {
-        // Spawns a single broadcast task with the specified address from args
-        let task = task::spawn(broadcast_to(bc_addr, 1030));
-        broadcast_tasks.push(task);
+    if let Some(broadcast_address_start) = start_ip {
+        if let Some(broadcast_address_to) = to_ip {
+            for broadcast_address in get_ip_range(broadcast_address_start, broadcast_address_to) {
+                let task = task::spawn(broadcast_to(broadcast_address, 1030));
+                broadcast_tasks.push(task);
+            }
+        } else {
+            // Spawns a single broadcast task with the specified address from --start
+            let task = task::spawn(broadcast_to(broadcast_address_start, 1030));
+            broadcast_tasks.push(task);
+        }
     } else {
         // Retrieves network interfaces and spawns a task for each with a valid broadcast IP
         let interfaces = datalink::interfaces();
