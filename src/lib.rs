@@ -8,16 +8,14 @@ where
     Fut: std::future::Future<Output = ()> + Send,
 {
     let addr = format!("0.0.0.0:{}", port);
-    let socket = Arc::new(Mutex::new(UdpSocket::bind(&addr).await.unwrap()));
+    let socket = Arc::new(Mutex::new(UdpSocket::bind(&addr).await.expect("Failed to bind socket")));
     println!("Listening on port {}", port);
 
     let mut buf = vec![0; 1024];
     loop {
-        let (len, addr) = socket.lock().await.recv_from(&mut buf).await.unwrap();
-        let received = buf[..len].to_vec();
-        let received_string = String::from_utf8_lossy(&received).into_owned();
+        let (len, addr) = socket.lock().await.recv_from(&mut buf).await.expect("Failed to receive data");
+        let received_string = String::from_utf8_lossy(&buf[..len]).into_owned();
 
-        // Execute custom code
         custom_code(received_string, addr, Arc::clone(&socket)).await;
     }
 }

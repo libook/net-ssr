@@ -1,95 +1,80 @@
 use net_ssr::listen_on_port;
 use pnet::datalink::{self, NetworkInterface};
-use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
+use std::net::{Ipv4Addr, SocketAddrV4};
 use tokio::net::UdpSocket;
 use tokio::task;
+use std::env;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    // Check if program recieved argument "--bc-addr" and a value after it
-    let mut broadcast_address = None;
-    let mut args = std::env::args();
-    while let Some(arg) = args.next() {
-        if arg == "--bc-addr" {
-            if let Some(value) = args.next() {
-                broadcast_address = Some(value.parse::<Ipv4Addr>().ok());
-            } else {
-                panic!("Expected broadcast address after --bc-addr");
-            }
-        }
-    }
+    let broadcast_address = parse_args();
 
-    // Start listening on port 1090
     let listener = task::spawn(async {
         listen_on_port(1090, |received_string, addr, _| {
             Box::pin(async move {
-                // Check if the received data is message start with 'R '.
                 if received_string.starts_with("R ") {
-                    // Print message after "R " and IP
-                    let message = received_string.split_at(2).1;
-                    println!("Received hostname: {} from {}", message, addr);
+                    println!("Received from {}: {}", addr, received_string);
                 }
             })
-        })
-        .await;
+        }).await;
     });
 
     let mut broadcast_tasks = vec![];
 
-    if broadcast_address.is_none() {
-        // Get all network interfaces
+    if let Some(bc_addr) = broadcast_address {
+        // 使用命令行参数指定的广播地址
+        let task = task::spawn(broadcast_to(bc_addr, 1030));
+        broadcast_tasks.push(task);
+    } else {
+        // 获取所有网络接口的广播地址
         let interfaces = datalink::interfaces();
-
-        // Broadcast to all addresses
         for interface in interfaces {
             if let Some(broadcast_ip) = get_broadcast_address(&interface) {
-                let task = task::spawn(async move {
-                    broadcast_to(&broadcast_ip, 1030).await;
-                });
+                let task = task::spawn(broadcast_to(broadcast_ip, 1030));
                 broadcast_tasks.push(task);
             }
         }
-    } else {
-        let broadcast_ip = broadcast_address.unwrap().unwrap();
-        let task = task::spawn(async move {
-            broadcast_to(&broadcast_ip, 1030).await;
-        });
-        broadcast_tasks.push(task);
     }
 
     for task in broadcast_tasks {
         task.await.unwrap();
     }
 
-    // Wait for the listener to finish
     listener.await.unwrap();
 
     Ok(())
 }
 
-fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
-    for ip in &interface.ips {
-        if let pnet::ipnetwork::IpNetwork::V4(ipv4) = ip {
-            let broadcast = ipv4.broadcast();
-            return Some(broadcast);
+fn parse_args() -> Option<Ipv4Addr> {
+    let mut args = env::args();
+    while let Some(arg) = args.next() {
+        if arg == "--bc-addr" {
+            return args.next().and_then(|value| value.parse().ok());
         }
     }
     None
 }
 
-async fn broadcast_to(broadcast_ip: &Ipv4Addr, port: u16) {
-    let socket = UdpSocket::bind("0.0.0.0:0").await.unwrap();
-    socket.set_broadcast(true).unwrap();
+fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
+    interface.ips.iter().find_map(|ip| {
+        if let pnet::ipnetwork::IpNetwork::V4(ipv4) = ip {
+            Some(ipv4.broadcast())
+        } else {
+            None
+        }
+    })
+}
 
-    let addr = SocketAddrV4::new(*broadcast_ip, port);
-    let socket_addr: SocketAddr = addr.into();
+async fn broadcast_to(broadcast_ip: Ipv4Addr, port: u16) {
+    let socket = UdpSocket::bind("0.0.0.0:0").await.expect("Failed to bind socket");
+    socket.set_broadcast(true).expect("Failed to set broadcast");
+
+    let addr = SocketAddrV4::new(broadcast_ip, port);
     let message = b"CQ";
 
-    match socket.send_to(message, &socket_addr).await {
-        Ok(_) => println!("Sent broadcast to {}:{}", broadcast_ip, port),
-        Err(e) => eprintln!(
-            "Failed to send broadcast to {}:{}. Error: {}",
-            broadcast_ip, port, e
-        ),
+    if let Err(e) = socket.send_to(message, &addr).await {
+        eprintln!("Failed to send broadcast to {}:{}. Error: {}", broadcast_ip, port, e);
+    } else {
+        println!("Sent broadcast to {}:{}", broadcast_ip, port);
     }
 }
