@@ -28,8 +28,16 @@ async fn main() -> std::io::Result<()> {
                 .help("Optional. Broadcast IP addresses from --start to --to")
                 .action(ArgAction::Set),
         )
+        .arg(
+            Arg::new("verbose")
+                .short('v')
+                .long("verbose")
+                .help("More output about what's happening")
+                .action(ArgAction::SetTrue),
+        )
         .get_matches();
 
+    let verbose = matches.get_flag("verbose");
     let start_ip = matches
         .get_one::<String>("start")
         .map(|s| Ipv4Addr::from_str(s).expect("Invalid --start IP address"));
@@ -46,18 +54,26 @@ async fn main() -> std::io::Result<()> {
     }
 
     // Spawns a listening task on port 1090 to handle incoming data
-    let listener = task::spawn(async {
-        listen_on_port(1090, |received_string, addr, _| {
-            Box::pin(async move {
-                // Prints received messages starting with "R "
-                let partten = "R ";
-                if received_string.starts_with(partten) {
-                    // Get hostname from 3rd characters to end
-                    let hostname = received_string[partten.len()..].to_string();
-                    println!("Received from {}: {}", addr, hostname);
-                }
-            })
-        })
+    let listener = task::spawn(async move {
+        listen_on_port(
+            1090,
+            |received_string: String, addr, _, verbose| {
+                Box::pin(async move {
+                    // Prints received messages starting with "R "
+                    let partten = "R ";
+                    if received_string.starts_with(partten) {
+                        // Get hostname from 3rd characters to end
+                        let hostname = received_string[partten.len()..].to_string();
+                        if verbose {
+                            println!("Received from IP: {}, hostname: {}", addr.ip(), hostname);
+                        } else {
+                            println!("{}\t{}", addr.ip(), hostname);
+                        }
+                    }
+                })
+            },
+            verbose,
+        )
         .await;
     });
 
@@ -68,12 +84,12 @@ async fn main() -> std::io::Result<()> {
     if let Some(broadcast_address_start) = start_ip {
         if let Some(broadcast_address_to) = to_ip {
             for broadcast_address in get_ip_range(broadcast_address_start, broadcast_address_to) {
-                let task = task::spawn(broadcast_to(broadcast_address, 1030));
+                let task = task::spawn(broadcast_to(broadcast_address, 1030, verbose));
                 broadcast_tasks.push(task);
             }
         } else {
             // Spawns a single broadcast task with the specified address from --start
-            let task = task::spawn(broadcast_to(broadcast_address_start, 1030));
+            let task = task::spawn(broadcast_to(broadcast_address_start, 1030, verbose));
             broadcast_tasks.push(task);
         }
     } else {
@@ -81,7 +97,7 @@ async fn main() -> std::io::Result<()> {
         let interfaces = datalink::interfaces();
         for interface in interfaces {
             if let Some(broadcast_ip) = get_broadcast_address(&interface) {
-                let task = task::spawn(broadcast_to(broadcast_ip, 1030));
+                let task = task::spawn(broadcast_to(broadcast_ip, 1030, verbose));
                 broadcast_tasks.push(task);
             }
         }
@@ -109,7 +125,7 @@ fn get_broadcast_address(interface: &NetworkInterface) -> Option<Ipv4Addr> {
 }
 
 /// Asynchronously sends a broadcast message to a specified IP address and port.
-async fn broadcast_to(broadcast_ip: Ipv4Addr, port: u16) {
+async fn broadcast_to(broadcast_ip: Ipv4Addr, port: u16, verbose: bool) {
     let socket = UdpSocket::bind("0.0.0.0:0")
         .await
         .expect("Failed to bind socket");
@@ -126,6 +142,8 @@ async fn broadcast_to(broadcast_ip: Ipv4Addr, port: u16) {
             broadcast_ip, port, e
         );
     } else {
-        println!("Sent broadcast to {}:{}", broadcast_ip, port);
+        if verbose {
+            println!("Sent broadcast to {}:{}", broadcast_ip, port);
+        }
     }
 }
