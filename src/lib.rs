@@ -4,19 +4,19 @@ use tokio::net::UdpSocket;
 use tokio::sync::Mutex;
 
 /// Listen on a specific port and call the provided custom code when a message is received.
-pub async fn listen_on_port<F, Fut>(port: u16, custom_code: F, verbose: bool)
+pub async fn listen_on_port<F, Fut>(host: Ipv4Addr, port: u16, custom_code: F, verbose: bool)
 where
     F: Fn(String, std::net::SocketAddr, Arc<Mutex<UdpSocket>>, bool) -> Fut + Send + Sync + 'static,
     Fut: std::future::Future<Output = ()> + Send,
 {
-    let addr = format!("0.0.0.0:{}", port);
+    let addr = format!("{}:{}", host, port);
     // Bind to the specified address and wrap the socket in an Arc and Mutex for thread-safe access.
     let socket = Arc::new(Mutex::new(
         UdpSocket::bind(&addr).await.expect("Failed to bind socket"),
     ));
 
     if verbose {
-        println!("Listening on port {}", port);
+        println!("Listening on {}", addr);
     }
 
     // Buffer for receiving data.

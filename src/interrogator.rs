@@ -17,7 +17,7 @@ async fn main() -> std::io::Result<()> {
                 .short('s')
                 .long("start")
                 .value_name("START")
-                .help("Optional. Broadcast starting IP address.")
+                .help("Optional. Broadcast starting at IP address.")
                 .action(ArgAction::Set),
         )
         .arg(
@@ -26,6 +26,15 @@ async fn main() -> std::io::Result<()> {
                 .long("to")
                 .value_name("TO")
                 .help("Optional. Broadcast IP addresses from --start to --to")
+                .action(ArgAction::Set),
+        )
+        .arg(
+            Arg::new("bind")
+                .short('b')
+                .long("bind")
+                .value_name("BIND")
+                .default_value("0.0.0.0")
+                .help("Optional. Bind and listen to specified broadcast address (not your IP)")
                 .action(ArgAction::Set),
         )
         .arg(
@@ -44,6 +53,10 @@ async fn main() -> std::io::Result<()> {
     let to_ip = matches
         .get_one::<String>("to")
         .map(|s| Ipv4Addr::from_str(s).expect("Invalid --to IP address"));
+    let bind_ip = matches
+        .get_one::<String>("bind")
+        .map(|s| Ipv4Addr::from_str(s).expect("Invalid --bind IP address"))
+        .unwrap();
 
     if let (Some(start), Some(to)) = (start_ip, to_ip) {
         if to <= start {
@@ -56,6 +69,7 @@ async fn main() -> std::io::Result<()> {
     // Spawns a listening task on port 1090 to handle incoming data
     let listener = task::spawn(async move {
         listen_on_port(
+            bind_ip,
             1090,
             |received_string: String, addr, _, verbose| {
                 Box::pin(async move {
