@@ -1,6 +1,6 @@
 use clap::{crate_description, crate_name, crate_version, Arg, ArgAction, Command};
 use net_ssr::listen_on_port;
-use std::net::Ipv4Addr;
+use std::net::SocketAddr;
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::net::UdpSocket;
@@ -19,7 +19,7 @@ async fn main() -> std::io::Result<()> {
                 .long("bind")
                 .value_name("BIND")
                 .default_value("0.0.0.0")
-                .help("Optional. Bind and listen to specified broadcast address (not your IP)")
+                .help("Optional. Bind and listen to specified broadcast address (not your IP). You can also customize the port like 0.0.0.0:1030")
                 .action(ArgAction::Set),
         )
         .arg(
@@ -33,13 +33,20 @@ async fn main() -> std::io::Result<()> {
 
     let verbose = matches.get_flag("verbose");
 
-    let bind_ip = matches
+    let bind_addr = matches
         .get_one::<String>("bind")
-        .map(|s| Ipv4Addr::from_str(s).expect("Invalid --bind IP address"))
+        .map(|s| {
+            if s.contains(":") {
+                return SocketAddr::from_str(s).expect("Invalid --bind IP address and port");
+            } else {
+                return SocketAddr::from_str(&format!("{}:1030", s))
+                    .expect("Invalid --bind IP address");
+            }
+        })
         .unwrap();
 
     let listener = task::spawn(async move {
-        listen_on_port(bind_ip, 1030, handle_request, verbose).await;
+        listen_on_port(bind_addr, handle_request, verbose).await;
     });
 
     listener.await.unwrap();
