@@ -18,7 +18,8 @@ On a device that needs to find answering devices, run the interrogator:
 ```shell
 interrogator
 ```
-This will broadcast an interrogation into the network and listen on port 1090. When an answering machine answers with an IP address, the interrogator will print out the IP address.
+This will broadcast an interrogation into the network(defaults to all networks currently accessed by the device) and listen on port 1090. When an answering machine answers with an IP address, the interrogator will print out the IP address.
+The interrogator will continue to wait for answers until the user exits using `Ctrl+c`.
 
 There are a variety of parameters that can be configured, check the help using `-h`.
 ```shell
