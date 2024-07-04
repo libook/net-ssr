@@ -16,8 +16,8 @@ path = "src/transponder.rs"
 [dependencies]
 hostname = "^0.4"
 tokio = { version = "1", features = ["full"] }
-tokio-util = "0.6"
-pnet = "0.28.0"
+tokio-util = "0.7.11"
+pnet = "0.35.0"
 command = { path = "./src/command" }
 
 [build-dependencies]
