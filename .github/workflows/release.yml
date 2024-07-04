@@ -61,8 +61,8 @@ jobs:
 
       - name: Set LIBRARY_PATH for Packet.lib
         run: |
-          $env:LIBRARY_PATH="C:\\Program Files\\Npcap\\Lib;$env:LIBRARY_PATH"
-          [Environment]::SetEnvironmentVariable("LIBRARY_PATH", $env:LIBRARY_PATH, [EnvironmentVariableTarget]::Machine)
+          $env:LIB="C:\\Program Files\\Npcap\\Lib;$env:LIB"
+          [Environment]::SetEnvironmentVariable("LIB", $env:LIB, [EnvironmentVariableTarget]::Machine)
 
       - name: Build
         run: |
