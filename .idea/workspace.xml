@@ -8,67 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8c2bfe3d-ae96-4014-ac88-58ffce277228" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/net-ssr.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/Cargo.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/Cargo.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/src/lib.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/.rustc_info.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/CACHEDIR.TAG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.cargo-lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstream-046a19aa1718572a/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstream-046a19aa1718572a/lib-anstream" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstream-046a19aa1718572a/lib-anstream.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-c5aea333c9bedf70/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-c5aea333c9bedf70/lib-anstyle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-c5aea333c9bedf70/lib-anstyle.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-parse-08f5d52fb9536df7/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-parse-08f5d52fb9536df7/lib-anstyle_parse" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-parse-08f5d52fb9536df7/lib-anstyle_parse.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-query-a49b5b9ff18f72bb/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-query-a49b5b9ff18f72bb/lib-anstyle_query" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/anstyle-query-a49b5b9ff18f72bb/lib-anstyle_query.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap-3652fca22b15f2cd/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap-3652fca22b15f2cd/lib-clap" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap-3652fca22b15f2cd/lib-clap.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap_builder-89c3506318f319ff/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap_builder-89c3506318f319ff/lib-clap_builder" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap_builder-89c3506318f319ff/lib-clap_builder.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap_lex-1e7b995f94d7d6fa/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap_lex-1e7b995f94d7d6fa/lib-clap_lex" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/clap_lex-1e7b995f94d7d6fa/lib-clap_lex.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/colorchoice-007f9b70436b28ca/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/colorchoice-007f9b70436b28ca/lib-colorchoice" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/colorchoice-007f9b70436b28ca/lib-colorchoice.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-3ebe776563ea0a1d/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-3ebe776563ea0a1d/lib-command" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-3ebe776563ea0a1d/lib-command.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-58777d4e359cd212/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-58777d4e359cd212/test-lib-command" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-58777d4e359cd212/test-lib-command.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-7fa5a8b188302be4/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-7fa5a8b188302be4/lib-command" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-7fa5a8b188302be4/lib-command.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-ccc3eb88a02d7c99/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-ccc3eb88a02d7c99/test-lib-command" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/command-ccc3eb88a02d7c99/test-lib-command.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/is_terminal_polyfill-7a39f4b69ea9e85f/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/is_terminal_polyfill-7a39f4b69ea9e85f/lib-is_terminal_polyfill" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/is_terminal_polyfill-7a39f4b69ea9e85f/lib-is_terminal_polyfill.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/strsim-1c3dcff9a6b0e61b/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/strsim-1c3dcff9a6b0e61b/lib-strsim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/strsim-1c3dcff9a6b0e61b/lib-strsim.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/utf8parse-73e69f71b42bc6d2/invoked.timestamp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/utf8parse-73e69f71b42bc6d2/lib-utf8parse" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/command/target/debug/.fingerprint/utf8parse-73e69f71b42bc6d2/lib-utf8parse.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/interrogator.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/interrogator.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transponder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/transponder.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +45,7 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/libook/Documents/GitProjects/libook/net-ssr&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -120,6 +61,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="cargo build" />
@@ -242,7 +188,7 @@
       <updated>1720066046767</updated>
       <workItem from="1720066048575" duration="1411000" />
       <workItem from="1720067545349" duration="3085000" />
-      <workItem from="1720071907899" duration="1027000" />
+      <workItem from="1720071907899" duration="4573000" />
     </task>
     <servers />
   </component>
