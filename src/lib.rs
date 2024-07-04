@@ -28,7 +28,7 @@ where
             .recv_from(&mut buf)
             .await
             .expect("Failed to receive data");
-        // Convert the received bytes into a owned string, ignoring non-UTF8 data.
+        // Convert the received bytes into an owned string, ignoring non-UTF8 data.
         let received_string = String::from_utf8_lossy(&buf[..len]).into_owned();
 
         // Invoke the user-provided custom function with the received data and the cloned socket Arc.
@@ -53,7 +53,7 @@ pub fn get_ip_range(start_ip: Ipv4Addr, end_ip: Ipv4Addr) -> Vec<Ipv4Addr> {
     ip_list
 }
 
-/// Convert an IPv4 address to a u32
+/// Convert an IPv4 address to an u32
 fn ipv4_to_u32(ip: Ipv4Addr) -> u32 {
     let octets = ip.octets();
     (u32::from(octets[0]) << 24)

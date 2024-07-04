@@ -93,10 +93,10 @@ async fn main() -> std::io::Result<()> {
             |received_string: String, addr, _, verbose| {
                 Box::pin(async move {
                     // Prints received messages starting with "R "
-                    let partten = "R ";
-                    if received_string.starts_with(partten) {
+                    let pattern = "R ";
+                    if received_string.starts_with(pattern) {
                         // Get hostname from 3rd characters to end
-                        let hostname = received_string[partten.len()..].to_string();
+                        let hostname = received_string[pattern.len()..].to_string();
                         if verbose {
                             println!("Received from IP: {}, hostname: {}", addr.ip(), hostname);
                         } else {
