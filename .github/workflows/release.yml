@@ -53,13 +53,15 @@ jobs:
       - name: Add target
         run: rustup target add ${{ matrix.target }}
 
-      - name: Install WinPcap/Npcap
+      - name: Install Npcap
         run: |
-          choco install npcap -y
+          $npcapInstallerPath = "$env:USERPROFILE\\npcap_installer.exe"
+          Invoke-WebRequest -Uri "https://nmap.org/npcap/dist/npcap-1.55.exe" -OutFile $npcapInstallerPath
+          Start-Process -FilePath $npcapInstallerPath -ArgumentList "/S" -Wait
 
       - name: Set LIBRARY_PATH for Packet.lib
         run: |
-          $env:LIBRARY_PATH="C:\Program Files\Npcap\Lib;C:\Program Files (x86)\WinPcap\Lib;$env:LIBRARY_PATH"
+          $env:LIBRARY_PATH="C:\\Program Files\\Npcap\\Lib;$env:LIBRARY_PATH"
           [Environment]::SetEnvironmentVariable("LIBRARY_PATH", $env:LIBRARY_PATH, [EnvironmentVariableTarget]::Machine)
 
       - name: Build
