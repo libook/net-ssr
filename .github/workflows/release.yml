@@ -56,17 +56,21 @@ jobs:
       - name: Download and Extract Npcap SDK
         run: |
           $npcapSdkUrl = "https://npcap.com/dist/npcap-sdk-1.13.zip"
-          $npcapSdkPath = "$env:USERPROFILE\npcap-sdk.zip"
+          $npcapSdkPath = "$env:USERPROFILE\\npcap-sdk.zip"
           Invoke-WebRequest -Uri $npcapSdkUrl -OutFile $npcapSdkPath
-          Expand-Archive -Path $npcapSdkPath -DestinationPath "$env:USERPROFILE\npcap-sdk"
+          Expand-Archive -Path $npcapSdkPath -DestinationPath "$env:USERPROFILE\\npcap-sdk"
+
+      - name: List SDK Directory Contents
+        run: Get-ChildItem -Path "$env:USERPROFILE\\npcap-sdk\\Lib" -Recurse
 
       - name: Set LIB environment variable for Packet.lib
         run: |
           $target = "${{ matrix.target }}"
-          $sdkLibPath = if ($target -eq "x86_64-pc-windows-msvc") { "$env:USERPROFILE\npcap-sdk\Lib\x64" } else { "$env:USERPROFILE\npcap-sdk\Lib\ARM64" }
-          $env:LIB="$sdkLibPath;$env:LIB"
-          [Environment]::SetEnvironmentVariable("LIB", $env:LIB, [EnvironmentVariableTarget]::Machine)
-        shell: powershell
+          $sdkLibPath = if ($target -eq "x86_64-pc-windows-msvc") { "$env:USERPROFILE\\npcap-sdk\\Lib\\x64" } else { "$env:USERPROFILE\\npcap-sdk\\Lib\\x86" }
+          [System.Environment]::SetEnvironmentVariable("LIB", $sdkLibPath, [System.EnvironmentVariableTarget]::Process)
+
+      - name: Print LIB Environment Variable
+        run: echo $env:LIB
 
       - name: Build
         run: |
