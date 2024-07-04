@@ -56,7 +56,7 @@ jobs:
       - name: Install Npcap
         run: |
           $npcapInstallerPath = "$env:USERPROFILE\\npcap_installer.exe"
-          Invoke-WebRequest -Uri "https://nmap.org/npcap/dist/npcap-1.55.exe" -OutFile $npcapInstallerPath
+          Invoke-WebRequest -Uri "https://nmap.org/npcap/dist/npcap-1.79.exe" -OutFile $npcapInstallerPath
           Start-Process -FilePath $npcapInstallerPath -ArgumentList "/S" -Wait
 
       - name: Set LIBRARY_PATH for Packet.lib
