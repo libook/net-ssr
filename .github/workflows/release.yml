@@ -66,8 +66,14 @@ jobs:
       - name: Set LIB environment variable for Packet.lib
         run: |
           $target = "${{ matrix.target }}"
-          $sdkLibPath = if ($target -eq "x86_64-pc-windows-msvc") { "$env:USERPROFILE\\npcap-sdk\\Lib\\x64" } else { "$env:USERPROFILE\\npcap-sdk\\Lib\\x86" }
+          if ($target -eq "x86_64-pc-windows-msvc") {
+            $sdkLibPath = "$env:USERPROFILE\\npcap-sdk\\Lib\\x64"
+          } else {
+            $sdkLibPath = "$env:USERPROFILE\\npcap-sdk\\Lib\\ARM64"
+          }
+          Write-Host "Setting LIB to $sdkLibPath"
           [System.Environment]::SetEnvironmentVariable("LIB", $sdkLibPath, [System.EnvironmentVariableTarget]::Process)
+          Write-Host "LIB is now set to: $env:LIB"
 
       - name: Print LIB Environment Variable
         run: echo $env:LIB
