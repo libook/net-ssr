@@ -1,2 +1,5 @@
 target/
 /man
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
