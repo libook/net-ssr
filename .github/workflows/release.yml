@@ -72,7 +72,7 @@ jobs:
             $sdkLibPath = "$env:USERPROFILE\\npcap-sdk\\Lib\\ARM64"
           }
           Write-Host "Setting LIB to $sdkLibPath"
-          [System.Environment]::SetEnvironmentVariable("LIB", $sdkLibPath, [System.EnvironmentVariableTarget]::Process)
+          [System.Environment]::SetEnvironmentVariable("LIB", $sdkLibPath, [System.EnvironmentVariableTarget]::Machine)
           Write-Host "LIB is now set to: $env:LIB"
 
       - name: Print LIB Environment Variable
