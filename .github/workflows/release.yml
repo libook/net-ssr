@@ -56,14 +56,14 @@ jobs:
       - name: Download and Extract Npcap SDK
         run: |
           $npcapSdkUrl = "https://npcap.com/dist/npcap-sdk-1.13.zip"
-          $npcapSdkPath = "$env:USERPROFILE\\npcap-sdk.zip"
+          $npcapSdkPath = "$env:USERPROFILE\\npcap-sdk\\npcap-sdk.zip"
           Invoke-WebRequest -Uri $npcapSdkUrl -OutFile $npcapSdkPath
           Expand-Archive -Path $npcapSdkPath -DestinationPath $env:USERPROFILE
 
       - name: Set LIB environment variable for Packet.lib
         run: |
           $target = "${{ matrix.target }}"
-          $sdkLibPath = if ($target -eq "x86_64-pc-windows-msvc") { "$env:USERPROFILE\\npcap-sdk-1.13\\Lib\\x64" } else { "$env:USERPROFILE\\npcap-sdk-1.13\\Lib\\ARM64" }
+          $sdkLibPath = if ($target -eq "x86_64-pc-windows-msvc") { "$env:USERPROFILE\\npcap-sdk\\Lib\\x64" } else { "$env:USERPROFILE\\npcap-sdk\\Lib\\ARM64" }
           $env:LIB="$sdkLibPath;$env:LIB"
           [Environment]::SetEnvironmentVariable("LIB", $env:LIB, [EnvironmentVariableTarget]::Machine)
         shell: powershell
