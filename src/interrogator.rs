@@ -65,11 +65,11 @@ async fn main() -> std::io::Result<()> {
     let bind_addr = matches
         .get_one::<String>("bind")
         .map(|s| {
-            if s.contains(":") {
-                return SocketAddr::from_str(s).expect("Invalid --bind IP address and port");
+            return if s.contains(":") {
+                SocketAddr::from_str(s).expect("Invalid --bind IP address and port")
             } else {
-                return SocketAddr::from_str(&format!("{}:1090", s))
-                    .expect("Invalid --bind IP address");
+                SocketAddr::from_str(&format!("{}:1090", s))
+                    .expect("Invalid --bind IP address")
             }
         })
         .unwrap();

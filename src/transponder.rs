@@ -36,11 +36,11 @@ async fn main() -> std::io::Result<()> {
     let bind_addr = matches
         .get_one::<String>("bind")
         .map(|s| {
-            if s.contains(":") {
-                return SocketAddr::from_str(s).expect("Invalid --bind IP address and port");
+            return if s.contains(":") {
+                SocketAddr::from_str(s).expect("Invalid --bind IP address and port")
             } else {
-                return SocketAddr::from_str(&format!("{}:1030", s))
-                    .expect("Invalid --bind IP address");
+                SocketAddr::from_str(&format!("{}:1030", s))
+                    .expect("Invalid --bind IP address")
             }
         })
         .unwrap();
@@ -62,7 +62,7 @@ async fn main() -> std::io::Result<()> {
 /// * `socket` - An Arc-wrapped Mutex-protected UDP socket for sending responses.
 async fn handle_request(
     received_string: String,
-    addr: std::net::SocketAddr,
+    addr: SocketAddr,
     socket: Arc<Mutex<UdpSocket>>,
     verbose: bool,
 ) {

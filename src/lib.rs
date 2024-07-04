@@ -6,7 +6,7 @@ use tokio::sync::Mutex;
 /// Listen on a specific port and call the provided custom code when a message is received.
 pub async fn listen_on_port<F, Fut>(addr:SocketAddr, custom_code: F, verbose: bool)
 where
-    F: Fn(String, std::net::SocketAddr, Arc<Mutex<UdpSocket>>, bool) -> Fut + Send + Sync + 'static,
+    F: Fn(String, SocketAddr, Arc<Mutex<UdpSocket>>, bool) -> Fut + Send + Sync + 'static,
     Fut: std::future::Future<Output = ()> + Send,
 {
     // Bind to the specified address and wrap the socket in an Arc and Mutex for thread-safe access.
