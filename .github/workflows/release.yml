@@ -56,9 +56,9 @@ jobs:
       - name: Download and Extract Npcap SDK
         run: |
           $npcapSdkUrl = "https://npcap.com/dist/npcap-sdk-1.13.zip"
-          $npcapSdkPath = "$env:USERPROFILE\\npcap-sdk\\npcap-sdk.zip"
+          $npcapSdkPath = "$env:USERPROFILE\\npcap-sdk.zip"
           Invoke-WebRequest -Uri $npcapSdkUrl -OutFile $npcapSdkPath
-          Expand-Archive -Path $npcapSdkPath -DestinationPath $env:USERPROFILE
+          Expand-Archive -Path $npcapSdkPath -DestinationPath "$env:USERPROFILE\\npcap-sdk"
 
       - name: Set LIB environment variable for Packet.lib
         run: |
