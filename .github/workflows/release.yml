@@ -72,15 +72,16 @@ jobs:
             $sdkLibPath = "$env:USERPROFILE\\npcap-sdk\\Lib\\ARM64"
           }
           Write-Host "Setting LIB to $sdkLibPath"
-          [System.Environment]::SetEnvironmentVariable("LIB", $sdkLibPath, [System.EnvironmentVariableTarget]::Machine)
-          Write-Host "LIB is now set to: $env:LIB"
+          echo "LIB=$sdkLibPath" >> $env:GITHUB_ENV
+          Write-Host "LIB is now set to: $sdkLibPath"
 
       - name: Print LIB Environment Variable
         run: echo $env:LIB
 
       - name: Build
-        run: |
-          cargo build --release --locked --target ${{ matrix.target }}
+        env:
+          LIB: ${{ env.LIB }}
+        run: cargo build --release --locked --target ${{ matrix.target }}
 
       - name: Pack artifact
         if: matrix.os == 'windows-latest'
