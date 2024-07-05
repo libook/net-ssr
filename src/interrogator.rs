@@ -1,10 +1,10 @@
-use net_ssr::{get_ip_range, listen_on_port};
+use net_ssr::command::get_interrogator_command;
 use pnet::datalink::{self, NetworkInterface};
 use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 use std::str::FromStr;
 use tokio::net::UdpSocket;
 use tokio::task;
-use net_ssr_shared::get_interrogator_command;
+use net_ssr::{get_ip_range, listen_on_port};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

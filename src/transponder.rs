@@ -1,11 +1,11 @@
-use net_ssr::listen_on_port;
+use net_ssr::command::get_transponder_command;
 use std::net::SocketAddr;
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::net::UdpSocket;
 use tokio::sync::Mutex;
 use tokio::task;
-use net_ssr_shared::get_transponder_command;
+use net_ssr::listen_on_port;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

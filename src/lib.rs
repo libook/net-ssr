@@ -2,6 +2,7 @@ use std::net::{Ipv4Addr,SocketAddr};
 use std::sync::Arc;
 use tokio::net::UdpSocket;
 use tokio::sync::Mutex;
+pub mod command;
 
 /// Listen on a specific port and call the provided custom code when a message is received.
 pub async fn listen_on_port<F, Fut>(addr:SocketAddr, custom_code: F, verbose: bool)
