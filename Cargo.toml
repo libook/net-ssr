@@ -9,7 +9,6 @@ exclude = [".github", ".idea", ".vscode", "man"]
 homepage = "https://github.com/libook/net-ssr"
 keywords = ["network", "IP_locator", "cli", "device_tracking", "monitoring"]
 license = "GPL-3.0"
-license-file = "LICENSE"
 name = "net-ssr"
 readme = "README.md"
 repository = "https://github.com/libook/net-ssr.git"
