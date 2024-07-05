@@ -6,6 +6,35 @@
 
 在网络中的若干设备上部署应答机（transponder），即可使用询问机（interrogator）快速定位到这些设备的IP地址。
 
+## 安装
+
+### 下载编译好的压缩包
+
+去 https://github.com/libook/net-ssr/releases 找到适合你的平台压缩包。
+
+### Cargo install
+
+```shell
+cargo install net-ssr
+```
+
+### AUR
+
+详见 https://aur.archlinux.org/packages/net-ssr
+使用任何AUR工具，例如：
+```shell
+paru -S net-ssr
+yay -S net-ssr
+```
+
+### 从源代码编译
+```shell
+git clone https://github.com/libook/net-ssr.git
+cd net-ssr
+cargo build --release
+cd target/release
+```
+
 ## 用法
 
 在需要报告IP的设备上，确保应答机处于运行状态:

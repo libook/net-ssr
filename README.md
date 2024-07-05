@@ -6,6 +6,35 @@ Network Secondary Surveillance Radar
 
 Deploying transponders on a number of devices in the network allows you to quickly locate the IP address of those devices using an interrogator.
 
+## Installation
+
+### Download from release
+
+Go https://github.com/libook/net-ssr/releases and find your platform binary.
+
+### Cargo install
+
+```shell
+cargo install net-ssr
+```
+
+### AUR
+
+Go check https://aur.archlinux.org/packages/net-ssr
+Use any AUR helper to install. For example:
+```shell
+paru -S net-ssr
+yay -S net-ssr
+```
+
+### Compile from source
+```shell
+git clone https://github.com/libook/net-ssr.git
+cd net-ssr
+cargo build --release
+cd target/release
+```
+
 ## Usage
 
 On devices that are required to report IP, ensure that the transponder is running:
