@@ -15,7 +15,6 @@ fi
 cargo build --release --locked --target "$1"
 
 # Create the artifact
-mkdir -p "$ARTIFACT_NAME/completions"
 cp "target/$1/release/interrogator" "$ARTIFACT_NAME"
 cp "target/$1/release/transponder" "$ARTIFACT_NAME"
 cp README.* LICENSE "$ARTIFACT_NAME"
