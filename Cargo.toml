@@ -1,9 +1,19 @@
 [package]
-name = "net-ssr"
-description = "Network Secondary Surveillance Radar"
-version = "0.1.0"
-edition = "2021"
+authors = ["libook <libook7@gmail.com>"]
 build = "build.rs"
+categories = ["command-line-utilities", "network-programming"]
+description = "Network Secondary Surveillance Radar"
+documentation = "https://docs.rs/net_ssr"
+edition = "2021"
+exclude = [".github", ".idea", ".vscode"]
+homepage = "https://github.com/libook/net-ssr"
+keywords = ["network", "IP_locator", "cli", "device_tracking", "monitoring"]
+license = "GPL-3.0"
+license-file = "LICENSE"
+name = "net-ssr"
+readme = "README.md"
+repository = "https://github.com/libook/net-ssr.git"
+version = "0.1.0"
 
 [[bin]]
 name = "interrogator"
@@ -14,11 +24,11 @@ name = "transponder"
 path = "src/transponder.rs"
 
 [dependencies]
+command = { path = "./src/command" }
 hostname = "^0.4"
 tokio = { version = "1", features = ["full"] }
 tokio-util = "0.7.11"
 pnet = "0.35.0"
-command = { path = "./src/command" }
 
 [build-dependencies]
 clap_mangen = "0.2.22"
