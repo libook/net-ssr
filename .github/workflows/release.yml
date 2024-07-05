@@ -19,6 +19,8 @@ jobs:
           - os: macos-latest
             target: aarch64-apple-darwin
     runs-on: ${{ matrix.os }}
+    env:
+      NET_SSR_BUILD_WITH_MAN: 1
     steps:
       - uses: actions/checkout@v4
 
@@ -44,6 +46,8 @@ jobs:
           - os: windows-latest
             target: aarch64-pc-windows-msvc
     runs-on: ${{ matrix.os }}
+    env:
+      NET_SSR_BUILD_WITH_MAN: 1
     steps:
       - uses: actions/checkout@v4
 
@@ -111,6 +115,8 @@ jobs:
             image: rust-musl-cross:aarch64-musl
     container:
       image: docker://ghcr.io/rust-cross/${{ matrix.image }}
+    env:
+      NET_SSR_BUILD_WITH_MAN: 1
     steps:
       - uses: actions/checkout@v4
 
