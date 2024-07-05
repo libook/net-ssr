@@ -4,7 +4,7 @@ use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 use std::str::FromStr;
 use tokio::net::UdpSocket;
 use tokio::task;
-use command::get_interrogator_command;
+use net_ssr_shared::get_interrogator_command;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

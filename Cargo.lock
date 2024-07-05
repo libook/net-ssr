@@ -164,13 +164,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b6a852b24ab71dffc585bcb46eaf7959d175cb865a7152e35b348d1b2960422"
 
 [[package]]
-name = "command"
-version = "0.0.0"
-dependencies = [
- "clap",
-]
-
-[[package]]
 name = "futures-core"
 version = "0.3.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -273,11 +266,18 @@ name = "net-ssr"
 version = "0.1.0"
 dependencies = [
  "clap_mangen",
- "command",
  "hostname",
+ "net-ssr-shared",
  "pnet",
  "tokio",
  "tokio-util",
+]
+
+[[package]]
+name = "net-ssr-shared"
+version = "0.1.0"
+dependencies = [
+ "clap",
 ]
 
 [[package]]

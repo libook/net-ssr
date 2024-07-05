@@ -5,7 +5,7 @@ use std::sync::Arc;
 use tokio::net::UdpSocket;
 use tokio::sync::Mutex;
 use tokio::task;
-use command::get_transponder_command;
+use net_ssr_shared::get_transponder_command;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {

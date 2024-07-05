@@ -24,7 +24,7 @@ name = "transponder"
 path = "src/transponder.rs"
 
 [dependencies]
-command = { path = "./src/command" }
+net-ssr-shared = { path = "./net-ssr-shared", version = "0.1.0" }
 hostname = "^0.4"
 tokio = { version = "1", features = ["full"] }
 tokio-util = "0.7.11"
@@ -32,4 +32,4 @@ pnet = "0.35.0"
 
 [build-dependencies]
 clap_mangen = "0.2.22"
-command = { path = "./src/command" }
+net-ssr-shared = { path = "./net-ssr-shared", version = "0.1.0" }

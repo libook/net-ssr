@@ -6,7 +6,7 @@ fn main() -> std::io::Result<()> {
     }
 
     {
-        let cmd = command::get_interrogator_command();
+        let cmd = net_ssr_shared::get_interrogator_command();
 
         let man = clap_mangen::Man::new(cmd);
         let mut buffer: Vec<u8> = Default::default();
@@ -16,7 +16,7 @@ fn main() -> std::io::Result<()> {
     }
 
     {
-        let cmd = command::get_transponder_command();
+        let cmd = net_ssr_shared::get_transponder_command();
 
         let man = clap_mangen::Man::new(cmd);
         let mut buffer: Vec<u8> = Default::default();

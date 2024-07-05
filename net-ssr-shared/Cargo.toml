@@ -1,0 +1,16 @@
+[package]
+authors = ["libook <libook7@gmail.com>"]
+description = "Shared library for building of net-ssr"
+documentation = "https://docs.rs/net_ssr"
+edition = "2021"
+homepage = "https://github.com/libook/net-ssr"
+license = "GPL-3.0"
+name = "net-ssr-shared"
+repository = "https://github.com/libook/net-ssr.git"
+version = "0.1.0"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+clap = { version = "4.5.8", features = ["cargo"] }
