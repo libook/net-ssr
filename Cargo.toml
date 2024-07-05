@@ -12,7 +12,7 @@ license = "GPL-3.0"
 name = "net-ssr"
 readme = "README.md"
 repository = "https://github.com/libook/net-ssr.git"
-version = "0.2.0"
+version = "0.2.1"
 
 [[bin]]
 name = "interrogator"
