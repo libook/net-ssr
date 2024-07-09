@@ -1,0 +1,23 @@
+From alpine AS download
+
+RUN apk --no-cache add wget unzip
+
+WORKDIR /app
+
+# Version for example: v0.1.0
+ARG VERSION
+# Platform: x86_64 or aarch64
+ARG PLATFORM
+
+RUN wget -O /tmp/net-ssr.zip https://github.com/libook/net-ssr/releases/download/${VERSION}/net-ssr-${PLATFORM}-unknown-linux-musl.zip && \
+    unzip /tmp/net-ssr.zip -d /tmp && \
+    mv /tmp/net-ssr-*/transponder /app && \
+    rm -rf /tmp/net-ssr*
+
+From scratch
+
+COPY --from=download /app/transponder /
+
+EXPOSE 1030
+
+CMD ["/transponder"]
