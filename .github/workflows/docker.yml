@@ -39,4 +39,6 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build --platform ${{ matrix.build_platform }} --build-arg VERSION=${VERSION} --build-arg PLATFORM=${{ matrix.platform }} -t libook/net-ssr-${{ matrix.binary }}:${VERSION} -t libook/net-ssr-${{ matrix.binary }}:latest -f docker/Dockerfile.${{ matrix.binary }} .
-          docker push libook/net-ssr-${{ matrix.binary }}:${VERSION} libook/net-ssr-${{ matrix.binary }}:latest
+          docker image ls -a
+          docker push libook/net-ssr-${{ matrix.binary }}:${VERSION}
+          docker push libook/net-ssr-${{ matrix.binary }}:latest
