@@ -10,11 +10,11 @@ jobs:
     strategy:
       matrix:
         binary: [interrogator, transponder]
-        include:
-          - build_platform: linux/amd64
-            platform: x86_64
-          - build_platform: linux/arm64
-            platform: aarch64
+        platform:
+          - docker: linux/amd64
+            download: x86_64
+          - docker: linux/arm64
+            download: aarch64
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,9 +39,9 @@ jobs:
         run: |
           docker buildx create --use
           docker buildx build \
-            --platform ${{ matrix.build_platform }} \
+            --platform ${{ matrix.platform.docker }} \
             --build-arg VERSION=${VERSION} \
-            --build-arg PLATFORM=${{ matrix.platform }} \
+            --build-arg PLATFORM=${{ matrix.platform.download }} \
             -t libook/net-ssr-${{ matrix.binary }}:${VERSION} \
             -t libook/net-ssr-${{ matrix.binary }}:latest \
             -f docker/Dockerfile.${{ matrix.binary }} \
