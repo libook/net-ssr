@@ -27,6 +27,22 @@ paru -S net-ssr
 yay -S net-ssr
 ```
 
+## Docker/Podman
+
+```shell
+# Run transponder in the background
+# via Docker:
+docker run -it -d --network=host --name transponder libook/net-ssr-transponder
+# via Podman:
+podman run -it -d --network=host --name transponder libook/net-ssr-transponder
+
+# Run interrogator for one time
+# via Docker:
+docker run -it --rm --network=host --name interrogator libook/net-ssr-interrogator -v
+# via Podman:
+podman run -it --rm --network=host --name interrogator libook/net-ssr-interrogator -v
+```
+
 ### Compile from source
 ```shell
 git clone https://github.com/libook/net-ssr.git
