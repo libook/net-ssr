@@ -38,10 +38,12 @@ jobs:
           VERSION: v0.2.1
         run: |
           docker buildx create --use
-          docker buildx build --platform ${{ matrix.build_platform }} \
+          docker buildx build \
+            --platform ${{ matrix.build_platform }} \
             --build-arg VERSION=${VERSION} \
             --build-arg PLATFORM=${{ matrix.platform }} \
             -t libook/net-ssr-${{ matrix.binary }}:${VERSION} \
             -t libook/net-ssr-${{ matrix.binary }}:latest \
             -f docker/Dockerfile.${{ matrix.binary }} \
-            --push
+            --push \
+            .
