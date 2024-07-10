@@ -1,4 +1,4 @@
-From alpine AS download
+FROM alpine AS download
 
 RUN apk --no-cache add wget unzip
 
@@ -14,7 +14,7 @@ RUN wget -O /tmp/net-ssr.zip https://github.com/libook/net-ssr/releases/download
     mv /tmp/net-ssr-*/transponder /app && \
     rm -rf /tmp/net-ssr*
 
-From scratch
+FROM scratch
 
 COPY --from=download /app/transponder /
 
