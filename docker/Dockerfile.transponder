@@ -6,10 +6,16 @@ WORKDIR /app
 
 # Version for example: v0.1.0
 ARG VERSION
-# Platform: x86_64 or aarch64
-ARG PLATFORM
 
-RUN wget -O /tmp/net-ssr.zip https://github.com/libook/net-ssr/releases/download/${VERSION}/net-ssr-${PLATFORM}-unknown-linux-musl.zip && \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; then \
+        export PLATFORM="x86_64"; \
+    elif [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        export PLATFORM="aarch64"; \
+    else \
+        echo "Unsupported platform: $TARGETPLATFORM"; \
+        exit 1; \
+    fi && \
+    wget -O /tmp/net-ssr.zip https://github.com/libook/net-ssr/releases/download/${VERSION}/net-ssr-${PLATFORM}-unknown-linux-musl.zip && \
     unzip /tmp/net-ssr.zip -d /tmp && \
     mv /tmp/net-ssr-*/transponder /app && \
     rm -rf /tmp/net-ssr*
