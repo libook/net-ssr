@@ -11,13 +11,13 @@ ARG PLATFORM
 
 RUN wget -O /tmp/net-ssr.zip https://github.com/libook/net-ssr/releases/download/${VERSION}/net-ssr-${PLATFORM}-unknown-linux-musl.zip && \
     unzip /tmp/net-ssr.zip -d /tmp && \
-    mv /tmp/net-ssr-*/interrorgator /app && \
+    mv /tmp/net-ssr-*/interrogator /app && \
     rm -rf /tmp/net-ssr*
 
 From scratch
 
-COPY --from=download /app/interrorgator /
+COPY --from=download /app/interrogator /
 
 EXPOSE 1090
 
-CMD ["/interrorgator"]
+CMD ["/interrogator"]
