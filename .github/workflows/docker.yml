@@ -1,9 +1,8 @@
 name: Build and Push Docker Images
 
 on:
-  workflow_dispatch
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
 
 jobs:
   build-and-push:
@@ -29,8 +28,7 @@ jobs:
 
       - name: Build and push Docker images
         env:
-          # VERSION: ${{ github.event.release.tag_name }}
-          VERSION: v0.2.1
+          VERSION: ${{ github.event.release.tag_name }}
         run: |
           docker buildx create --use
           docker buildx build \
