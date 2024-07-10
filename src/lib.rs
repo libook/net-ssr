@@ -1,11 +1,12 @@
-use std::net::{Ipv4Addr,SocketAddr};
+use std::net::{Ipv4Addr, SocketAddr};
 use std::sync::Arc;
 use tokio::net::UdpSocket;
+use tokio::signal;
 use tokio::sync::Mutex;
 pub mod command;
 
 /// Listen on a specific port and call the provided custom code when a message is received.
-pub async fn listen_on_port<F, Fut>(addr:SocketAddr, custom_code: F, verbose: bool)
+pub async fn listen_on_port<F, Fut>(addr: SocketAddr, custom_code: F, verbose: bool)
 where
     F: Fn(String, SocketAddr, Arc<Mutex<UdpSocket>>, bool) -> Fut + Send + Sync + 'static,
     Fut: std::future::Future<Output = ()> + Send,
@@ -71,4 +72,13 @@ fn u32_to_ipv4(n: u32) -> Ipv4Addr {
         ((n >> 8) & 0xFF) as u8,
         (n & 0xFF) as u8,
     )
+}
+
+pub fn handle_ctrl_c(verbose: bool) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(async move {
+        signal::ctrl_c().await.expect("Failed to listen for ctrl+c");
+        if verbose {
+            println!("Ctrl+C received!");
+        }
+    })
 }

@@ -1,11 +1,11 @@
 use net_ssr::command::get_transponder_command;
+use net_ssr::{handle_ctrl_c, listen_on_port};
 use std::net::SocketAddr;
 use std::str::FromStr;
 use std::sync::Arc;
 use tokio::net::UdpSocket;
 use tokio::sync::Mutex;
 use tokio::task;
-use net_ssr::listen_on_port;
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
@@ -31,7 +31,20 @@ async fn main() -> std::io::Result<()> {
         listen_on_port(bind_addr, handle_request, verbose).await;
     });
 
-    listener.await.unwrap();
+    let ctrl_c_handle = handle_ctrl_c(verbose);
+
+    tokio::select! {
+        _ = ctrl_c_handle => {
+            if verbose {
+                println!("Exit by Ctrl+C");
+            }
+        }
+        _ = listener => {
+            if verbose {
+                println!("Exit by socket task completion");
+            }
+        }
+    }
 
     Ok(())
 }

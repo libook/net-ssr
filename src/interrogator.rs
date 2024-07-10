@@ -4,7 +4,7 @@ use std::net::{Ipv4Addr, SocketAddr, SocketAddrV4};
 use std::str::FromStr;
 use tokio::net::UdpSocket;
 use tokio::task;
-use net_ssr::{get_ip_range, listen_on_port};
+use net_ssr::{get_ip_range, handle_ctrl_c, listen_on_port};
 
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
@@ -98,7 +98,20 @@ async fn main() -> std::io::Result<()> {
         task.await.unwrap();
     }
 
-    listener.await.unwrap();
+    let ctrl_c_handle = handle_ctrl_c(verbose);
+
+    tokio::select! {
+        _ = ctrl_c_handle => {
+            if verbose {
+                println!("Exit by Ctrl+C");
+            }
+        }
+        _ = listener => {
+            if verbose {
+                println!("Exit by socket task completion");
+            }
+        }
+    }
 
     Ok(())
 }

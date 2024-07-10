@@ -28,4 +28,4 @@ COPY --from=download /app/transponder /
 
 EXPOSE 1030
 
-CMD ["/transponder"]
+ENTRYPOINT ["/transponder"]

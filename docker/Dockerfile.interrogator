@@ -28,4 +28,4 @@ COPY --from=download /app/interrogator /
 
 EXPOSE 1090
 
-CMD ["/interrogator"]
+ENTRYPOINT ["/interrogator"]
