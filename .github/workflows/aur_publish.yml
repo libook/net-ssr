@@ -1,0 +1,24 @@
+name: aur-publish
+
+on:
+  workflow_dispatch
+
+jobs:
+  aur-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Fill PKGBUILD"
+        run: ./scripts/fill_PKGBUILD.sh
+
+      - name: Publish AUR package
+        uses: KSXGitHub/github-actions-deploy-aur@v2.7.2
+        with:
+          pkgname: net-ssr
+          pkgbuild: ./aur/PKGBUILD
+          commit_username: libook
+          commit_email: libook7@gmail.com
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: Update AUR package via GitHub Actions
+          ssh_keyscan_types: rsa,ecdsa,ed25519
