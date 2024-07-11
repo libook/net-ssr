@@ -17,4 +17,6 @@ jobs:
 
       - name: "cargo publish"
         run: |-
-          cargo publish
+          cargo publish \
+            --no-verify
+            --dry-run
