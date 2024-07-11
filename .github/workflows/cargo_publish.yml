@@ -1,7 +1,8 @@
 name: Cargo Publish
 
 on:
-  workflow_dispatch
+  release:
+    types: [published]
 
 jobs:
   crates_io_publish:
@@ -19,4 +20,3 @@ jobs:
         run: |-
           cargo publish \
             --no-verify
-            --dry-run
