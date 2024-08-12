@@ -1,7 +1,7 @@
 #[path = "src/command.rs"]
 mod command;
 
-use clap::{crate_name};
+use clap::crate_name;
 use clap_complete::{generate_to, Shell};
 
 fn main() -> std::io::Result<()> {
