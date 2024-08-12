@@ -1,0 +1,12 @@
+[Unit]
+Description=Transponder Service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/transponder -v
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
