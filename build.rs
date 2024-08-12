@@ -1,6 +1,7 @@
 #[path = "src/command.rs"]
 mod command;
 
+use clap::{crate_name};
 use clap_complete::{generate_to, Shell};
 
 fn main() -> std::io::Result<()> {
@@ -29,7 +30,7 @@ fn main() -> std::io::Result<()> {
         }
 
         for bin_info in bin_info_list.iter() {
-            let man = clap_mangen::Man::new((bin_info.get_command)());
+            let man = clap_mangen::Man::new((bin_info.get_command)()).title(crate_name!());
             let mut buffer: Vec<u8> = Default::default();
             man.render(&mut buffer)?;
 

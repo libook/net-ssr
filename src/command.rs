@@ -1,9 +1,10 @@
-use clap::{crate_description, crate_name, crate_version, Arg, ArgAction, Command};
+use clap::{crate_name, crate_version, Arg, ArgAction, Command};
 
 pub fn get_interrogator_command() -> Command {
-    Command::new(crate_name!())
+    Command::new("interrogator")
         .version(crate_version!())
-        .about(crate_description!())
+        .about(format!("Find answering devices. Part of {}.", crate_name!()))
+        .long_about("This will broadcast an interrogation into the network(defaults to all networks currently accessed by the device) and listen on port 1090. When an answering machine answers with an IP address, the interrogator will print out the IP address. The interrogator will continue to wait for answers until the user exits using Ctrl+c.")
         .arg(
             Arg::new("start")
                 .short('s')
@@ -48,9 +49,10 @@ pub fn get_interrogator_command() -> Command {
 }
 
 pub fn get_transponder_command() -> Command {
-    Command::new(crate_name!())
+    Command::new("transponder")
         .version(crate_version!())
-        .about(crate_description!())
+        .about(format!("Report IP and hostname. Part of {}.", crate_name!()))
+        .long_about("This will start a process listening on port 1030. When an interrogator asks within the network, the transponder will answer the IP address.")
         .arg(
             Arg::new("bind")
                 .short('b')
