@@ -37,5 +37,5 @@ zip -r "$ARTIFACT_NAME.zip" "$ARTIFACT_NAME"
 if [[ "$1" == *-gnu ]]; then
 	cargo install cargo-deb
 	cargo deb --target "$1"
-	cp "target/$1/debian/$PACKAGE_NAME*.deb" "./$ARTIFACT_NAME.deb"
+	cp target/$1/debian/$PACKAGE_NAME*.deb ./$ARTIFACT_NAME.deb
 fi
