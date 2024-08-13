@@ -41,3 +41,16 @@ clap_complete = "4.5.6"
 clap_complete_fig = "4.5.1"
 clap_complete_nushell = "4.5.2"
 clap_mangen = "0.2.22"
+
+[package.metadata.deb]
+assets = [
+    ["man/interrogator.1", "usr/share/man/man1/", "644"],
+    ["man/transponder.1", "usr/share/man/man1/", "644"],
+    ["systemd/transponder.service", "usr/lib/systemd/system/", "644"],
+    ["completions/_interrogator", "usr/share/zsh/site-functions/_interrogator", "644"],
+    ["completions/interrogator.bash", "usr/share/bash-completion/completions/interrogator", "644"],
+    ["completions/interrogator.fish", "usr/share/fish/vendor_completions.d/interrogator.fish", "644"],
+    ["completions/_transponder", "usr/share/zsh/site-functions/_transponder", "644"],
+    ["completions/transponder.bash", "usr/share/bash-completion/completions/transponder", "644"],
+    ["completions/transponder.fish", "usr/share/fish/vendor_completions.d/transponder.fish", "644"],
+]

@@ -1,7 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-export ARTIFACT_NAME="net-ssr-$1"
+export PACKAGE_NAME="net-ssr"
+export ARTIFACT_NAME=$PACKAGE_NAME"-"$1
 export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=/usr/bin/aarch64-linux-gnu-gcc
 
 export NET_SSR_BUILD_WITH_MAN=1
@@ -31,3 +32,10 @@ then
 	sudo apt-get update && sudo apt-get install -yq zip
 fi
 zip -r "$ARTIFACT_NAME.zip" "$ARTIFACT_NAME"
+
+# Install cargo-deb and make deb while $1 is end with "-gnu"
+if [[ "$1" == *-gnu ]]; then
+	cargo install cargo-deb
+	cargo deb --target "$1"
+	cp "target/$1/debian/$PACKAGE_NAME*.deb" "./$ARTIFACT_NAME.deb"
+fi
