@@ -43,7 +43,7 @@ clap_complete_nushell = "4.5.2"
 clap_mangen = "0.2.22"
 
 [target.aarch64-unknown-linux-gnu]
-strip = { path = "aarch64-linux-gnu-strip" }
+strip = { path = "/usr/bin/aarch64-linux-gnu-strip" }
 
 [package.metadata.deb]
 assets = [
