@@ -44,12 +44,20 @@ clap_mangen = "0.2.22"
 
 [package.metadata.deb]
 assets = [
+    # binaries
+    ["target/release/interrogator", "usr/bin/interrogator", "755"],
+    ["target/release/transponder", "usr/bin/transponder", "755"],
+    # man pages
     ["man/interrogator.1", "usr/share/man/man1/", "644"],
     ["man/transponder.1", "usr/share/man/man1/", "644"],
+    # systemd services
     ["systemd/transponder.service", "usr/lib/systemd/system/", "644"],
+    # shell completions
+    ## interrogator
     ["completions/_interrogator", "usr/share/zsh/site-functions/_interrogator", "644"],
     ["completions/interrogator.bash", "usr/share/bash-completion/completions/interrogator", "644"],
     ["completions/interrogator.fish", "usr/share/fish/vendor_completions.d/interrogator.fish", "644"],
+    ## transponder
     ["completions/_transponder", "usr/share/zsh/site-functions/_transponder", "644"],
     ["completions/transponder.bash", "usr/share/bash-completion/completions/transponder", "644"],
     ["completions/transponder.fish", "usr/share/fish/vendor_completions.d/transponder.fish", "644"],
