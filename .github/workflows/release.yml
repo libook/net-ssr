@@ -36,7 +36,7 @@ jobs:
           path: net-ssr-${{ matrix.target }}.zip
 
       - name: Upload deb artifact
-        if: matrix.target == '*-gnu'
+        if: contains(matrix.target, '-gnu')
         uses: actions/upload-artifact@v4
         with:
           name: net-ssr-${{ matrix.target }}.deb
